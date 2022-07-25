@@ -1,8 +1,9 @@
 """Aggregate every user-available command."""
+import gettext
 from textwrap import dedent
 
 from telegram import Bot, Update
-from telegram.ext import CommandHandler
+from telegram.ext import CommandHandler, CallbackContext
 
 from . import analytics
 from .config import DB_URI
@@ -12,9 +13,10 @@ from .util import (
     user_info_from_username,
     open_database,
 )
+from .i18n import _tr
 
 
-def average_length(_: Bot, update: Update):
+def average_length(update: Update, _: CallbackContext):
     """Reply the user who invoked the command with hers/his average message length.
 
     Args:
@@ -30,7 +32,7 @@ def average_length(_: Bot, update: Update):
     update.message.reply_text(response)
 
 
-def karma(_: Bot, update: Update):
+def karma(update: Update, _: CallbackContext):
     """Reply the user who invoked the command with hers/his respective karma.
 
     Args:
@@ -60,18 +62,19 @@ def karma(_: Bot, update: Update):
         )
 
     if user_info is None:
-        message.reply_text(f'Could not find user named {username}')
+        message.reply_text(_tr('Could not find user named {username}').format(username=username))
         return
 
     user_karma = analytics.get_karma(user_info.user_id, message.chat_id, period)
 
-    period_suffix = f'(since {period})' if period is not None else '(all time)'
-    message.reply_text(
-        f'{user_info.username} has {user_karma} karma in this chat {period_suffix}.'
-    )
+
+    period_suffix = _tr('(since {period})').format(period=period) if period is not None else _tr('(all time)')
+    message.reply_text(_tr(
+        '{username} has {user_karma} karma in this chat {period_suffix}.'
+    ).format(username=user_info.username,user_karma=user_karma, period_suffix=period_suffix))
 
 
-def karmas(_: Bot, update: Update):
+def karmas(update: Update, _: CallbackContext):
     """Shows the top 10 karmas in a given group.
 
     If the group doesn't have at least 10 users, shows as many as there are in
@@ -95,7 +98,7 @@ def karmas(_: Bot, update: Update):
         'all',
         'alltime',
     ):
-        update.message.reply_text(f'Period {requested_period} is not supported.')
+        update.message.reply_text(_tr('Period {requested_period} is not supported.').format(requested_period=requested_period))
         return
 
     period = get_period(arg)
@@ -109,7 +112,7 @@ def karmas(_: Bot, update: Update):
     update.message.reply_text(response)
 
 
-def devil(_: Bot, update: Update):
+def devil(update: Update, _: CallbackContext):
     """Reply the user with some dumb text and the person with the lowest karma, the "devil".
 
     Args:
@@ -117,14 +120,14 @@ def devil(_: Bot, update: Update):
         update: The object that represents an incoming update for the bot to handle.
     """
     group_devil = analytics.get_devil_saint(update.message.chat.id).devil
-    response = (
-        f"{group_devil.name}, there's a special place in hell for you, see you there."
-    )
+    response = (_tr(
+        "{devil}, there's a special place in hell for you, see you there."
+    ).format(devil=group_devil.name))
 
     update.message.reply_text(response)
 
 
-def saint(_: Bot, update: Update):
+def saint(update: Update, _: CallbackContext):
     """Reply the user with a message and the person with the highest karma, the "saint".
 
     Args:
@@ -132,20 +135,21 @@ def saint(_: Bot, update: Update):
         update: The object that represents an incoming update for the bot to handle.
     """
     group_saint = analytics.get_devil_saint(update.message.chat.id).saint
-    response = f"{group_saint.name}, apparently you're the nicest person here. I don't like you."
+    response = _tr("{saint}, apparently you're the nicest person here. I don't like you.").format(saint=group_saint.name)
 
     update.message.reply_text(response)
 
 
-def help_message(_: Bot, update: Update):
+def help_message(update: Update, _: CallbackContext):
     """Shows the commands that can be used with the bot.
 
     Args:
         bot: The object that represents the Telegram Bot.
         update: The object that represents an incoming update for the bot to handle.
     """
+    print("/help")
 
-    response = dedent(
+    response = dedent(_tr(
         """
                 Karma is obtained through replying messages with one or more + or -.
 
@@ -157,11 +161,11 @@ def help_message(_: Bot, update: Update):
                 /devil - replies the user informing who is the person with the lowest karma.
                 /saint - replies the user informing who is the person with the highest karma.
                 """
-    )
+    ))
 
     update.message.reply_text(response)
 
-
+#maybe something here too?
 HANDLERS = [
     CommandHandler('average_length', average_length),
     CommandHandler('karma', karma),

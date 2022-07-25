@@ -3,12 +3,13 @@ from dataclasses import dataclass
 from typing import Optional
 
 import dataset
-from telegram import Message
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+from telegram import Message, Update
+from telegram.ext import CallbackContext, CommandHandler, Filters, MessageHandler, Updater
 
 from .commands import HANDLERS
 from .config import DB_URI, TOKEN
 from .util import open_database
+from .i18n import _tr
 
 logging.basicConfig()
 
@@ -130,7 +131,7 @@ def save_user(user, db):
     table.upsert(new_row, keys=['user_id'])
 
 
-def save(_, update):
+def save(update: Update, _: CallbackContext):
     with open_database(DB_URI) as db:
         save_message(update.message, db)
         save_user(update.message.from_user, db)
@@ -145,41 +146,42 @@ def track(chat_id, user_id, value, db):
         table.delete(chat_id=chat_id, user_id=user_id)
 
 
-def opt_in(_, update):
+def opt_in(update: Update, _: CallbackContext):
     message = update.message
     chat_id = message.chat_id
     user_id = message.from_user.id
 
     with open_database(DB_URI) as db:
         if is_tracked(chat_id, user_id, db):
-            message.reply_text(u'You are already being tracked in this chat \U0001F600')
+            message.reply_text(_tr(u'You are already being tracked in this chat \U0001F600'))
             return
 
         track(chat_id, user_id, True, db)
 
-    message.reply_text(
+    message.reply_text(_tr(
         u'You are now being tracked in this chat. '
         'Worry not, the contents of your messages are not saved, '
         'only their length \U00002713'
-    )
+    ))
 
 
-def opt_out(_, update):
+def opt_out(update, _):
     message = update.message
     chat_id = message.chat_id
     user_id = message.from_user.id
 
     with open_database(DB_URI) as db:
         if not is_tracked(chat_id, user_id, db):
-            message.reply_text(u'You are not being tracked in this chat \U0001F914')
+            message.reply_text(_tr(u'You are not being tracked in this chat \U0001F914'))
             return
 
         track(chat_id, user_id, False, db)
 
-    message.reply_text(u'You are no longer being tracked in this chat \U0001F64B')
+    message.reply_text(_tr(u'You are no longer being tracked in this chat \U0001F64B'))
 
 
 def run():
+    print("Running...")
     updater = Updater(TOKEN)
 
     handlers = HANDLERS + [

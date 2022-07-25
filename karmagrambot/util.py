@@ -57,7 +57,7 @@ def user_info_from_username(db, username) -> Optional[UserInfo]:
 
     return UserInfo(user_id, username)
 
-
+# how to i18n this?
 def get_period(arg_period: str) -> Optional[date]:
     today = date.today()
     if arg_period in ('m', 'month'):

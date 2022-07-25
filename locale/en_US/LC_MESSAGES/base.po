@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2022-07-25 15:31-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: karmagrambot/__init__.py:157
+msgid "You are already being tracked in this chat 😀"
+msgstr ""
+
+#: karmagrambot/__init__.py:162
+msgid "You are now being tracked in this chat. Worry not, the contents of your messages are not saved, only their length ✓"
+msgstr ""
+
+#: karmagrambot/__init__.py:176
+msgid "You are not being tracked in this chat 🤔"
+msgstr ""
+
+#: karmagrambot/__init__.py:181
+msgid "You are no longer being tracked in this chat 🙋"
+msgstr ""
+
+#: karmagrambot/commands.py:67
+msgid "Could not find user named {username}"
+msgstr ""
+
+#: karmagrambot/commands.py:73
+msgid "(all time)"
+msgstr ""
+
+#: karmagrambot/commands.py:73
+msgid "(since {period})"
+msgstr ""
+
+#: karmagrambot/commands.py:74
+msgid "{username} has {user_karma} karma in this chat {period_suffix}."
+msgstr ""
+
+#: karmagrambot/commands.py:103
+msgid "Period {requested_period} is not supported."
+msgstr ""
+
+#: karmagrambot/commands.py:125
+msgid "{devil}, there's a special place in hell for you, see you there."
+msgstr ""
+
+#: karmagrambot/commands.py:140
+msgid "{saint}, apparently you're the nicest person here. I don't like you."
+msgstr ""
+
+#: karmagrambot/commands.py:154
+msgid ""
+"\n"
+"                Karma is obtained through replying messages with one or more + or -.\n"
+"\n"
+"                The following commands are available:\n"
+"\n"
+"                /average_length - informs your average message length.\n"
+"                /karma - informs your respective karma.\n"
+"                /karmas - shows the top 10 karmas in a given group.\n"
+"                /devil - replies the user informing who is the person with the lowest karma.\n"
+"                /saint - replies the user informing who is the person with the highest karma.\n"
+"                "
+msgstr ""
+

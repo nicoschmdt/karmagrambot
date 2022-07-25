@@ -31,3 +31,5 @@ if not DB_DIR.exists():
     DB_DIR.mkdir()
 
 DB_URI = f'sqlite:///{DB_PATH}'
+
+LANGUAGE = config['locale']
