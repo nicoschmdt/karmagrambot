@@ -1,4 +1,5 @@
 """Aggregate every user-available command."""
+import locale
 import gettext
 from textwrap import dedent
 
@@ -68,7 +69,8 @@ def karma(update: Update, _: CallbackContext):
     user_karma = analytics.get_karma(user_info.user_id, message.chat_id, period)
 
 
-    period_suffix = _tr('(since {period})').format(period=period) if period is not None else _tr('(all time)')
+    date_format = locale.nl_langinfo(locale.D_FMT)
+    period_suffix = _tr('(since {period})').format(period=period.strftime(date_format)) if period is not None else _tr('(all time)')
     message.reply_text(_tr(
         '{username} has {user_karma} karma in this chat {period_suffix}.'
     ).format(username=user_info.username,user_karma=user_karma, period_suffix=period_suffix))
