@@ -10,9 +10,9 @@ license = "MIT"
 python = "^3.7"
 python-telegram-bot = "^11.1"
 dataset = "^1.1"
-mypy = "^0.740.0"
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.971"
 flake8 = "^3.7"
 jedi = "^0.13.2"
 pylint = "^2.6"
@@ -20,6 +20,7 @@ pylint_quotes = "^0.2.1"
 isort = "^5.6.4"
 invoke = "^1.2"
 black = "^19.3b0"
+typed-ast = "^1.5.4"
 
 [tool.poetry.scripts]
 karmagrambot = "karmagrambot:run"
