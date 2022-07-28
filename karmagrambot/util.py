@@ -77,6 +77,5 @@ def get_period(arg_period: str) -> Optional[date]:
 
 @contextmanager
 def open_database(uri: str) -> Iterator[dataset.Database]:
-    db = dataset.connect(uri)
-    yield db
-    db.close()
+    with dataset.connect(uri) as db:
+        yield db
