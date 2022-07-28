@@ -14,7 +14,7 @@ from .util import (
     user_info_from_username,
     open_database,
 )
-from .i18n import _tr
+from .i18n import _tr, _n
 
 
 def average_length(update: Update, _: CallbackContext):
@@ -28,7 +28,8 @@ def average_length(update: Update, _: CallbackContext):
     average = analytics.average_message_length(
         update.message.from_user.id, update.message.chat.id
     )
-    response = f'{average:.3}'
+    
+    response = f"{_n(average)}"
 
     update.message.reply_text(response)
 
